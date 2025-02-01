@@ -90,4 +90,33 @@ class Utility
   static double hpwl(const Edge*, double& hpwlx, double& hpwly);
 };
 
+#define allocateCUDA(var, size, type)                               \
+  {                                                                 \
+    cudaError_t status = cudaMalloc(&(var), (size) * sizeof(type)); \
+    if (status != cudaSuccess) {                                    \
+      Print(kERROR, "cudaMalloc failed for " #var "\n");  \
+    }                                                               \
+  }
+
+#define destroyCUDA(var)                                         \
+  {                                                              \
+    cudaError_t status = cudaFree(var);                          \
+    if (status != cudaSuccess) {                                 \
+      Print(kERROR, "cudaFree failed for " #var "\n"); \
+    }                                                            \
+  }
+
+#define checkCUDA(status)                                                  \
+  {                                                                        \
+    dreamplaceAssertMsg(status == cudaSuccess, "CUDA Runtime Error: %s\n", \
+                        cudaGetErrorString(status));                       \
+  }
+
+#define allocateCopyCUDA(var, rhs, size)                            \
+  {                                                                 \
+    allocateCUDA(var, size, decltype(*rhs));                        \
+    checkCUDA(cudaMemcpy(var, rhs, sizeof(decltype(*rhs)) * (size), \
+                         cudaMemcpyHostToDevice));                  \
+  }
+
 }  // namespace dpo

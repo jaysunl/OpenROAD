@@ -260,6 +260,8 @@ void OpenRoad::readLef(const char* filename,
                        bool make_tech,
                        bool make_library)
 {
+  // std::cout << "READING IN A LEF FILE" << std::endl;
+  
   odb::lefin lef_reader(db_, logger_, false);
   dbLib* lib = nullptr;
   dbTech* tech = nullptr;
@@ -295,6 +297,7 @@ void OpenRoad::readDef(const char* filename,
                        bool incremental,
                        bool child)
 {
+  // std::cout << "READING IN A DEF FILE" << std::endl;
   if (!floorplan_init && !incremental && !child && db_->getChip()
       && db_->getChip()->getBlock()) {
     logger_->info(ORD, 48, "Loading an additional DEF.");

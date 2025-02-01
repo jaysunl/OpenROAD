@@ -56,6 +56,8 @@
 #include "router.h"
 #include "symmetry.h"
 
+// Extra header files for GPU accelerated dpo
+
 namespace dpo {
 
 using utl::DPO;
